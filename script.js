@@ -21,23 +21,39 @@ class Calculator {
     }
 
     delete(){
-
+        this.currentOperand = this.currentOperand.slice(0,-1)
     }
 
     appendNumber(number){
-        this.currentOperand = number
+        if (number == '.' && this.currentOperand.includes('.')){
+            return
+        }
+        this.currentOperand += number
     }
 
-    chooseOperation(){
-
+    chooseOperation(operation){
+        this.operation = operation
+        this.previousOperand = this.currentOperand
+        this.previousOperand += ' '
+        this.previousOperand += operation
+        this.currentOperand = ''
     }
 
     equals(){
+        let res = parseInt(this.previousOperand)
+
+        if (this.operation == '+'){
+            res += parseInt(this.currentOperand)
+        }
+        this.clear()
+        this.currentOperand = res
 
     }
 
+
     updateDisplay(){
         this.currentOperandTextElement.innerText = this.currentOperand
+        this.previousOperandTextElement.innerText = this.previousOperand
     }
 }
 
@@ -49,4 +65,26 @@ numberButtons.forEach(button => {
     calculator.appendNumber(button.innerText)
     calculator.updateDisplay()
   })
+})
+
+deleteButton.addEventListener('click', (button) =>{
+    calculator.delete()
+    calculator.updateDisplay()
+})
+
+allClearButton.addEventListener('click', button => {
+    calculator.clear()
+    calculator.updateDisplay()
+})
+
+operationButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.chooseOperation(button.innerText)
+        calculator.updateDisplay()
+    })
+})
+
+equalsButton.addEventListener('click', button => {
+    calculator.equals()
+    calculator.updateDisplay()
 })
