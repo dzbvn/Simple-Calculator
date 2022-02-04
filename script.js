@@ -25,13 +25,14 @@ class Calculator {
     }
 
     appendNumber(number){
-        if (number == '.' && this.currentOperand.includes('.')){
+        if (number == '.' && (this.currentOperand.includes('.') || (this.currentOperand == ''))){
             return
         }
         this.currentOperand += number
     }
 
     chooseOperation(operation){
+        if (this.currentOperand == '') return
         this.operation = operation
         this.previousOperand = this.currentOperand
         this.previousOperand += ' '
@@ -40,11 +41,21 @@ class Calculator {
     }
 
     equals(){
-        let res = parseInt(this.previousOperand)
+        let res = parseFloat(this.previousOperand)
 
         if (this.operation == '+'){
-            res += parseInt(this.currentOperand)
+            res += parseFloat(this.currentOperand)
         }
+        else if (this.operation == '-'){
+            res -= parseFloat(this.currentOperand)
+        }
+        else if (this.operation == '÷'){
+            res /= parseFloat(this.currentOperand)
+        }
+        else if (this.operation == '*'){
+            res *= parseFloat(this.currentOperand)
+        }
+
         this.clear()
         this.currentOperand = res
 
