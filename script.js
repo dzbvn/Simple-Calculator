@@ -32,7 +32,12 @@ class Calculator {
     }
 
     chooseOperation(operation){
-        if (this.currentOperand == '') return
+        if (this.currentOperand === '') return
+        if (this.operation !== undefined) {
+            this.operation = operation 
+            this.equals()
+            this.updateDisplay()
+        }
         this.operation = operation
         this.previousOperand = this.currentOperand
         this.previousOperand += ' '
@@ -41,6 +46,13 @@ class Calculator {
     }
 
     equals(){
+        if (this.operation === undefined) return
+        if (this.currentOperand === ''){
+            
+            this.currentOperand = parseInt(this.previousOperand).toString()
+            this.previousOperand = ''
+            return
+        }
         let res = parseFloat(this.previousOperand)
 
         if (this.operation == '+'){
@@ -58,6 +70,7 @@ class Calculator {
 
         this.clear()
         this.currentOperand = res
+        this.operation = undefined
 
     }
 
